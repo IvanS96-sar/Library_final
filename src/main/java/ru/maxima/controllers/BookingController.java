@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/book")
 public class BookingController {
     private final PersonService personService;
@@ -56,6 +57,7 @@ public class BookingController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void createNewBook(@RequestBody BookDTO bookDTO){
         bookService.createBook(bookDTO);
     }
@@ -63,6 +65,7 @@ public class BookingController {
 
 
     @PostMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void editBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
        bookService.update(id,bookDTO);
 
@@ -70,16 +73,19 @@ public class BookingController {
     }
 
     @DeleteMapping("/{id}/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBook(@PathVariable("id") Integer id) {
          bookService.deleteBook(id);
     }
 
     @PostMapping("/{id}/give")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void giveBook( @PathVariable Person person, @PathVariable Long id) {
         bookService.giveBook(id,person);
     }
 
     @PostMapping("/{id}/return")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void returnBook(@PathVariable("id") Long id) {
          bookService.takeBookReturn(id);
     }

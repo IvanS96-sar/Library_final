@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import ru.maxima.dto.PersonDTO;
@@ -65,12 +66,14 @@ public class PersonController {
 
 
     @PutMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void editPerson(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
 
         personService.update(id, personDTO);
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deletePerson(@PathVariable("id") Integer idPerson) {
 
         personService.delete(idPerson);

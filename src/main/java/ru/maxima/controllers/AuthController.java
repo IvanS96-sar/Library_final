@@ -19,7 +19,7 @@ import ru.maxima.validation.PersonValidator;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final PersonValidator personValidator;
@@ -27,14 +27,13 @@ public class AuthController {
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
-    private final ModelMapper modelMapper;
     @Autowired
-    public AuthController(PersonValidator personValidator, PersonService personService, JWTUtil jwtUtil, AuthenticationManager authenticationManager, ModelMapper modelMapper) {
+    public AuthController(PersonValidator personValidator, PersonService personService, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.personValidator = personValidator;
         this.personService = personService;
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
-        this.modelMapper = modelMapper;
+
     }
 
     @PostMapping("/login")
