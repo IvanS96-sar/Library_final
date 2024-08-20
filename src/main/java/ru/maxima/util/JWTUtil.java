@@ -42,8 +42,4 @@ public class JWTUtil {
     }
 
 
-    public String getUsername(String tokenFromRequest) {
-        String onlyToken = tokenFromRequest.substring(7);
-        return validateTokenAndReturnUsername(onlyToken);
-    }
 }

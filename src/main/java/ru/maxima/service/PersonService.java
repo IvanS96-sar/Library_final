@@ -2,6 +2,7 @@ package ru.maxima.service;
 
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.maxima.dto.PersonDTO;
@@ -15,15 +16,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class PersonService {
     private final PeopleRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final JWTUtil jwtUtil;
-
+    @Autowired
     public PersonService(PeopleRepository repository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, JWTUtil jwtUtil) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
@@ -44,14 +43,14 @@ public class PersonService {
     }
 
     @Transactional
-    public void save(Person person) {
-        enrich(person);
-        repository.save(person);
+    public Person save(Person person) {
+        
+       return  repository.save(person);
     }
     @Transactional
     public PersonDTO createPerson(PersonDTO personDTO) {
+
         Person person = convertFromDTOToPerson(personDTO);
-        //person.setCreatedPerson(creator);
         person.setCreatedAt(LocalDateTime.now());
         repository.save(person);
         return convertToPersonDTO(person);
@@ -64,15 +63,16 @@ public class PersonService {
         person.setIdPerson(id);
         repository.save(person);
 
+
     }
 
     @Transactional
     public void delete(Integer id) {
         Person person =findById(Long.valueOf(id));
         person.setRemoved(true);
-        //person.setRemovedPerson(deletedBy);
         person.setRemovedAt(LocalDateTime.now());
         repository.save(person);
+
 
     }
 
@@ -91,7 +91,6 @@ public class PersonService {
 
     public Person convertFromDTOToPerson(PersonDTO personDTO) {
         Person person = modelMapper.map(personDTO, Person.class);
-
         enrich(person);
         return person;
     }

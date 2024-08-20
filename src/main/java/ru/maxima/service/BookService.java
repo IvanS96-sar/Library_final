@@ -5,7 +5,6 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import ru.maxima.dto.BookDTO;
-import ru.maxima.dto.PersonDTO;
 import ru.maxima.models.Book;
 import ru.maxima.models.Person;
 import ru.maxima.repositories.BookRepository;
@@ -38,18 +37,12 @@ public class BookService {
     }
 
     @Transactional
-    public void saveBook(Book book) {
-        book.setCreatedAt(LocalDateTime.now());
-        bookRepository.save(book);
-
-    }
-    @Transactional
-    public BookDTO createBook(BookDTO bookDTO) {
+    public void createBook(BookDTO bookDTO) {
         Book book  = convertFromDTOToBook(bookDTO);
-        //person.setCreatedPerson(creator);
         book.setCreatedAt(LocalDateTime.now());
-        bookRepository.save(book);
-        return convertToBookDTO(book);
+         bookRepository.save(book);
+
+
     }
 
 
@@ -83,10 +76,12 @@ public class BookService {
     public BookDTO convertToBookDTO(Book book) {
         return modelMapper.map(book, BookDTO.class);
     }
+
     public Book convertFromDTOToBook(BookDTO bookDTO) {
         Book book= modelMapper.map(bookDTO, Book.class);
         book.setUpdatedAt(LocalDateTime.now());
 
         return book;
     }
+
 }

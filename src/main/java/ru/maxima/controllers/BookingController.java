@@ -19,6 +19,10 @@ import ru.maxima.models.Person;
 import ru.maxima.service.BookService;
 import ru.maxima.service.PersonService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,11 +68,10 @@ public class BookingController {
 
 
 
-    @PostMapping("/{id}/edit")
+    @PutMapping("/{id}/edit")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void editBook(@PathVariable Long id, @RequestBody BookDTO bookDTO){
        bookService.update(id,bookDTO);
-
 
     }
 
@@ -89,4 +92,5 @@ public class BookingController {
     public void returnBook(@PathVariable("id") Long id) {
          bookService.takeBookReturn(id);
     }
+
 }
